@@ -15,12 +15,12 @@ const sideStyle = {
   color: 'white',
   fontSize: '20px',
   fontWeight: 700,
-  background: '#0e3b43'
+  background: '#025373'
 };
 
 const contentStyle = {
   height: '90vh',
-  background: '#9aaca4',
+  background: '#dce8f2',
   color: 'white',
   fontSize: '16px',
   fontWeight: 500,
