@@ -58,7 +58,7 @@ const CalculatorForm = () => {
             >
                 <Form.Item
                     name="width"
-                    label="Width"
+                    label="Width (sm)"
                     rules={[
                         {
                             required: true,
@@ -71,7 +71,7 @@ const CalculatorForm = () => {
 
                 <Form.Item
                     name="height"
-                    label="Height"
+                    label="Height (sm)"
                     rules={[
                         {
                             required: true,
@@ -112,9 +112,9 @@ const CalculatorForm = () => {
                 <div>
                     <Typography>
                         <pre>Number of Stickers in row: {sticker}</pre>
-                        <pre>Final print price : {final}</pre>
+                        <pre>Final print price : {final} rub</pre>
                         <pre>Meters to print: {meters}</pre>
-                        <pre>The cost of one Sticker: {oneSticker}</pre>
+                        <pre>The cost of one Sticker: {oneSticker} rub</pre>
                     </Typography>
                 </div>
             }
