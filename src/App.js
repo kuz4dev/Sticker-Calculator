@@ -3,7 +3,6 @@ import './App.css';
 import { GithubOutlined, MessageOutlined } from '@ant-design/icons';
 import Link from 'antd/es/typography/Link';
 import CalculatorForm from './components/CalculatorForm';
-import StickersVisualization from './components/StickersVisualization';
 
 const { Header, Content, Footer } = Layout;
 
@@ -49,7 +48,7 @@ function App() {
 
         <CalculatorForm />
 
-        <StickersVisualization />
+        {/* <StickersVisualization /> */}
 
       </Content>
 

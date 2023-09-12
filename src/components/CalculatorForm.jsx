@@ -1,19 +1,34 @@
-import { Form, Input, Button, Space, Layout, Typography } from "antd";
+import { Form, Input, Button, Space, Typography } from "antd";
 import stickerCalculator from "../stickerCalculator";
 import { useState } from "react";
 
 const CalculatorForm = () => {
 
     const [isInfo, setIsInfo] = useState(false);
+    const [sticker, setSticker] = useState();
+    const [final, setFinal] = useState();
+    const [meters, setMeters] = useState();
+    const [oneSticker, setOneSticker] = useState();
+    const [minSticker, setMinSticker] = useState();
 
     const [form] = Form.useForm();
 
     const onFinish = ({ width, height, number }) => {
-        console.log(width, height, number);
-        setIsInfo(true);
-        const [stickerInRow, rowCount, metersToPrint] = stickerCalculator(Number(width), Number(height), Number(number));
+        const [stickerInRow, finalPrice, metersToPrint, oneStickerPrice, minStickersToPrint] = stickerCalculator(Number(width), Number(height), Number(number));
 
-        console.log(stickerInRow, rowCount, metersToPrint);
+        console.log(stickerInRow, finalPrice, metersToPrint, oneStickerPrice, minStickersToPrint);
+
+        if (minStickersToPrint > number) {
+            setMinSticker(minStickersToPrint);
+            setIsInfo(false);
+        } else {
+            setMinSticker(null);
+            setSticker(stickerInRow);
+            setFinal(finalPrice);
+            setMeters(metersToPrint);
+            setOneSticker(oneStickerPrice);
+            setIsInfo(true);
+        }
     };
 
     const onFinishFailed = (errorInfo) => {
@@ -25,8 +40,13 @@ const CalculatorForm = () => {
         form.resetFields();
     };
 
+    const styles = {
+        display: 'flex',
+        flexDirection: 'column'
+    };
+
     return (
-        <>
+        <div style={styles} >
             <Form
                 form={form}
                 name="control-hooks"
@@ -88,19 +108,26 @@ const CalculatorForm = () => {
                 </Form.Item>
             </Form>
 
-            <br />
-
             {isInfo &&
-                <>
+                <div>
                     <Typography>
-                        <pre>Number of Stickers: { }</pre>
-                        <pre>Final print price : { }</pre>
-                        <pre>Meters to print: { }</pre>
-                        <pre>The cost of one Sticker: { }</pre>
+                        <pre>Number of Stickers in row: {sticker}</pre>
+                        <pre>Final print price : {final}</pre>
+                        <pre>Meters to print: {meters}</pre>
+                        <pre>The cost of one Sticker: {oneSticker}</pre>
                     </Typography>
-                </>
+                </div>
             }
-        </>
+
+            {!isInfo &&
+                <div>
+                    <Typography>
+                        <Typography.Text>The minimum length of the canvas for printing is 0.5 meters</Typography.Text>
+                        <pre>Minimum number of stickers: {minSticker}</pre>
+                    </Typography>
+                </div>
+            }
+        </div >
     );
 };
 

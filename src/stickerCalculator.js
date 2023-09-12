@@ -10,15 +10,16 @@ const INK_PRICE_PER_METER = 80;
 const REAL_CANVAS_WIDTH = CANVAS_WIDTH - 4;
 
 const stickerCalculator = (stickerWidth, stickerHeight, stickersNumber) => {
-    let stickerInRow, finalPrice, oneStickerPrice, metersToPrint;
-
+    let stickerInRow, finalPrice, metersToPrint, oneStickerPrice;
     stickerInRow = Math.floor(REAL_CANVAS_WIDTH / (stickerWidth + MIN_INDENT));
-
     const rowCount = Math.ceil(stickersNumber / stickerInRow);
+    metersToPrint = ((16 + (stickerHeight + 0.2) * rowCount) / 100).toFixed(3);
+    finalPrice = Math.ceil((CANVAS_PRICE * (metersToPrint * 100 / CANVAS_HEIGHT)) + (INK_PRICE_PER_METER * metersToPrint));
+    oneStickerPrice = Math.ceil(finalPrice / stickersNumber);
 
-    metersToPrint = (16 + (stickerHeight + 0.2) * rowCount) / 100;
+    const minStickersToPrint = (Math.floor((MIN_CANVAS_HEIGHT - 15 - 1) / (stickerHeight + MIN_INDENT)) * stickerInRow) + stickerInRow;
 
-    return [stickerInRow, rowCount, metersToPrint];
+    return [stickerInRow, finalPrice, metersToPrint, oneStickerPrice, minStickersToPrint];
 };
 
 export default stickerCalculator;
