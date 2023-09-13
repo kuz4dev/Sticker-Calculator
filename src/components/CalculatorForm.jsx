@@ -11,23 +11,31 @@ const CalculatorForm = () => {
     const [oneSticker, setOneSticker] = useState();
     const [minSticker, setMinSticker] = useState();
 
+    const [isError, setIsError] = useState(false);
+
     const [form] = Form.useForm();
 
     const onFinish = ({ width, height, number }) => {
         const [stickerInRow, finalPrice, metersToPrint, oneStickerPrice, minStickersToPrint] = stickerCalculator(Number(width), Number(height), Number(number));
 
-        console.log(stickerInRow, finalPrice, metersToPrint, oneStickerPrice, minStickersToPrint);
+        console.log(stickerInRow, finalPrice, metersToPrint, oneStickerPrice, minStickersToPrint)
 
-        if (minStickersToPrint > number) {
-            setMinSticker(minStickersToPrint);
+        if (stickerInRow < 1) {
+            setIsError(true);
             setIsInfo(false);
         } else {
-            setMinSticker(null);
-            setSticker(stickerInRow);
-            setFinal(finalPrice);
-            setMeters(metersToPrint);
-            setOneSticker(oneStickerPrice);
-            setIsInfo(true);
+            setIsError(false);
+            if (minStickersToPrint > number) {
+                setMinSticker(minStickersToPrint);
+                setIsInfo(false);
+            } else {
+                setMinSticker(null);
+                setSticker(stickerInRow);
+                setFinal(finalPrice);
+                setMeters(metersToPrint);
+                setOneSticker(oneStickerPrice);
+                setIsInfo(true);
+            }
         }
     };
 
@@ -36,7 +44,8 @@ const CalculatorForm = () => {
     };
 
     const onReset = () => {
-        setIsInfo(false);
+        setIsInfo(null);
+        setIsError(false);
         form.resetFields();
     };
 
@@ -119,11 +128,24 @@ const CalculatorForm = () => {
                 </div>
             }
 
-            {!isInfo &&
+            {!isInfo ??
                 <div>
                     <Typography>
                         <Typography.Text>The minimum length of the canvas for printing is 0.5 meters</Typography.Text>
                         <pre>Minimum number of stickers: {minSticker}</pre>
+                    </Typography>
+                </div>
+            }
+
+            {isError &&
+                <div>
+                    <Typography>
+                        <Typography.Text>
+                            Warning!
+                        </Typography.Text>
+                        <Typography.Text>
+                            <pre>Max sticker width and height is 96 sm!</pre>
+                        </Typography.Text>
                     </Typography>
                 </div>
             }
