@@ -13,13 +13,13 @@ const stickerCalculator = (stickerWidth, stickerHeight, stickersNumber) => {
 
     let stickerInRow, finalPrice, metersToPrint, oneStickerPrice;
 
-    if (stickerWidth >= REAL_CANVAS_WIDTH) {
+    if (stickerWidth > REAL_CANVAS_WIDTH && stickerHeight <= REAL_CANVAS_WIDTH) {
         const width = stickerWidth;
         stickerWidth = stickerHeight;
         stickerHeight = width;
         stickerInRow = Math.floor(REAL_CANVAS_WIDTH / stickerWidth);
     } else {
-        stickerInRow = Math.floor(REAL_CANVAS_WIDTH / (stickerWidth + MIN_INDENT));
+        stickerInRow = Math.floor((REAL_CANVAS_WIDTH + MIN_INDENT) / (stickerWidth + MIN_INDENT));
     }
 
     const rowCount = Math.ceil(stickersNumber / stickerInRow);

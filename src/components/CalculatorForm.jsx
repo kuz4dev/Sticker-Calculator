@@ -128,16 +128,17 @@ const CalculatorForm = () => {
                 </div>
             }
 
-            {!isInfo ??
+            {!isInfo &&
                 <div>
                     <Typography>
                         <Typography.Text>The minimum length of the canvas for printing is 0.5 meters</Typography.Text>
                         <pre>Minimum number of stickers: {minSticker}</pre>
                     </Typography>
-                </div>
+                </div >
             }
 
-            {isError &&
+            {
+                isError &&
                 <div>
                     <Typography>
                         <Typography.Text>
