@@ -25,7 +25,7 @@ const CalculatorForm = () => {
         minimum: false,
     });
 
-    const lengthToPrint = stickers.map(sticker => sticker.metersToPrint).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+    const lengthToPrint = stickers.map(sticker => sticker.metersToPrint).reduce((accumulator, currentValue) => accumulator + currentValue + 0.002, 0);
     const finalPrice = stickers.map(sticker => sticker.finalPrice).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
     const isMaxWidthOrHeight = stickers.map(sticker => sticker.stickerInRow).every((stickersInRow) => stickersInRow > 0);
 
@@ -110,6 +110,11 @@ const CalculatorForm = () => {
             dataIndex: 'count',
             key: 'count',
         },
+        {
+            title: 'Цена',
+            dataIndex: 'price',
+            key: 'price',
+        },
     ];
 
     const dataTable = stickers.map((sticker, index) => {
@@ -119,6 +124,7 @@ const CalculatorForm = () => {
             width: sticker.width,
             height: sticker.height,
             count: sticker.number,
+            price: sticker.oneStickerPrice,
         });
     });
 
@@ -197,7 +203,7 @@ const CalculatorForm = () => {
             </Form>
 
             {
-                isVisible.info &&
+                isVisible.info && isMaxWidthOrHeight &&
                 <Info stickers={stickers} lengthToPrint={lengthToPrint} finalPrice={finalPrice} />
             }
 
