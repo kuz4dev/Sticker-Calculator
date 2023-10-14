@@ -2,9 +2,9 @@ import { Form, Input, Button, Space, Typography } from "antd";
 import { formsStyle, titleStyle } from "../../styles/style";
 import { inputNumberZeroValidator } from "../../utils/validators/validators";
 import { addStickerSize } from "../../store/stickerReducer";
-import stickerCalculator from "../../stickerCalculator";
+import stickerCalculator from "../../utils/calculator/stickerCalculator";
 
-const StickerSizeForm = ({ closeForm, dispatch, stickersState }) => {
+const StickerSizeForm = ({ closeForm, dispatch, stickersState, updateInfo }) => {
 
     const [form] = Form.useForm();
 

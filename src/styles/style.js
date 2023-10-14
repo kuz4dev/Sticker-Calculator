@@ -1,3 +1,8 @@
+export const formStyle = {
+    display: "flex",
+    flexDirection: 'column',
+};
+
 export const titleStyle = {
     fontWeight: 600,
     fontSize: '16px',

@@ -15,7 +15,7 @@ const stickerReducer = (state = initialState, action) => {
         case ADD_STICKER_SIZE: {
             return {
                 ...state,
-                stickers: [...state.stickers, { ...action.stickerInfo }]
+                stickers: [...state.stickers, { ...action.stickerInfo, id: state.stickers.length + 1 }]
             };
         }
         case CHANGE_INK_PRICE: {

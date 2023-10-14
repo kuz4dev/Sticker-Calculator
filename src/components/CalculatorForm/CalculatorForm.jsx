@@ -1,12 +1,13 @@
 import { Form, Typography, Input, Button, Space, Table } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import StickerSizeForm from "../StickerSizeForm/StickerSizeForm";
 import Error from "../Logs/Error";
 import Info from "../Logs/Info";
-import { buttonAddStyle, formsStyle, titleStyle } from "../../styles/style";
+import { buttonAddStyle, formStyle, formsStyle, titleStyle } from "../../styles/style";
 import { useDispatch, useSelector } from "react-redux";
 import { changeCanvasPrice, changeInkPrice, clearStickerInfo } from "../../store/stickerReducer";
 import { inputNumberZeroValidator } from "../../utils/validators/validators";
+import { tableColumnInfo } from "./FormInfo";
 
 const MIN_HEIGHT_TO_PRINT = 0.5;
 
@@ -60,6 +61,10 @@ const CalculatorForm = () => {
         }
     };
 
+    useEffect(() => {
+        onSubmit();
+    }, [lengthToPrint, isMaxWidthOrHeight]);
+
     const onFinishFailed = () => {
         setIsVisible(prevState => {
             return {
@@ -89,38 +94,10 @@ const CalculatorForm = () => {
         dispatch(changeInkPrice(Number(event.target.value)));
     };
 
-    const columns = [
-        {
-            title: 'Номер размера',
-            dataIndex: 'size',
-            key: 'size',
-        },
-        {
-            title: 'Ширина стикера',
-            dataIndex: 'width',
-            key: 'width',
-        },
-        {
-            title: 'Высота стикера',
-            dataIndex: 'height',
-            key: 'height',
-        },
-        {
-            title: 'Количество',
-            dataIndex: 'count',
-            key: 'count',
-        },
-        {
-            title: 'Цена',
-            dataIndex: 'price',
-            key: 'price',
-        },
-    ];
-
     const dataTable = stickers.map((sticker, index) => {
         return ({
-            key: index + 1,
-            size: index + 1,
+            key: sticker.id,
+            size: sticker.id,
             width: sticker.width,
             height: sticker.height,
             count: sticker.number,
@@ -133,11 +110,10 @@ const CalculatorForm = () => {
     };
 
     return (
-        <div style={{ marginTop: '10px' }
-        } >
+        <div style={formStyle} >
 
             {isStickerForm &&
-                <StickerSizeForm stickersState={stickersState} dispatch={dispatch} closeForm={setIsStickerForm} />
+                <StickerSizeForm stickersState={stickersState} dispatch={dispatch} closeForm={setIsStickerForm} updateInfo={onSubmit} />
             }
 
             {
@@ -148,7 +124,7 @@ const CalculatorForm = () => {
             }
 
             {
-                <Table columns={columns} dataSource={dataTable} pagination={pagination} />
+                <Table columns={tableColumnInfo} dataSource={dataTable} pagination={pagination} />
             }
 
             <Form
@@ -209,11 +185,11 @@ const CalculatorForm = () => {
 
             {
                 isVisible.minimum &&
-                <Error title={'Минимальная длина плёнки к печати - 0.5 метра!'} message={`Минимальное количество стикеров: ${stickersState.stickers[0].minStickersToPrint}`} />
+                <Error title={'Минимальная длина плёнки к печати - 0.5 метра!'} message={`Нужно напечатать больше стикеров!`} />
             }
             {
                 isVisible.error &&
-                <Error title={'Ошибка!'} message={'Максимиальная ширина и высота стикера 96 см!'} />
+                <Error title={'Ошибка!'} message={'Превышена максимиальная ширина и высота для стикеров!'} />
             }
         </div >
     );
