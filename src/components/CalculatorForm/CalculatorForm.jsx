@@ -1,5 +1,5 @@
 import { Form, Typography, Input, Button, Space, Table } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import StickerSizeForm from "../StickerSizeForm/StickerSizeForm";
 import Error from "../Logs/Error";
 import Info from "../Logs/Info";
@@ -15,6 +15,8 @@ const CalculatorForm = () => {
     const dispatch = useDispatch();
     const stickersState = useSelector((state) => state.sticker);
     const stickers = stickersState.stickers;
+
+    const isMounted = useRef(false);
 
     const [form] = Form.useForm();
 
@@ -62,7 +64,12 @@ const CalculatorForm = () => {
     };
 
     useEffect(() => {
-        onSubmit();
+        if (isMounted.current) {
+            onSubmit();
+            console.log(isMounted)
+        } else {
+            isMounted.current = false;
+        }
     }, [lengthToPrint, isMaxWidthOrHeight]);
 
     const onFinishFailed = () => {
@@ -101,7 +108,7 @@ const CalculatorForm = () => {
             width: sticker.width,
             height: sticker.height,
             count: sticker.number,
-            price: sticker.oneStickerPrice,
+            price: sticker.oneStickerPrice ? sticker.oneStickerPrice : '-',
         });
     });
 
