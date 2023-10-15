@@ -66,9 +66,10 @@ const CalculatorForm = () => {
     useEffect(() => {
         if (isMounted.current) {
             onSubmit();
-            console.log(isMounted)
+            console.log(isMounted);
         } else {
-            isMounted.current = false;
+            console.log(isMounted);
+            isMounted.current = true;
         }
     }, [lengthToPrint, isMaxWidthOrHeight]);
 
@@ -85,8 +86,8 @@ const CalculatorForm = () => {
         setIsVisible({
             minimum: false, error: false, info: false,
         });
-        form.resetFields();
         dispatch(clearStickerInfo());
+        form.resetFields();
     };
 
     const onAddSize = () => {
@@ -108,7 +109,7 @@ const CalculatorForm = () => {
             width: sticker.width,
             height: sticker.height,
             count: sticker.number,
-            price: sticker.oneStickerPrice ? sticker.oneStickerPrice : '-',
+            price: Number.isFinite(sticker.oneStickerPrice) ? sticker.oneStickerPrice : '-',
         });
     });
 
@@ -191,12 +192,12 @@ const CalculatorForm = () => {
             }
 
             {
-                isVisible.minimum &&
+                isVisible.minimum && isMounted.current &&
                 <Error title={'Минимальная длина плёнки к печати - 0.5 метра!'} message={`Нужно напечатать больше стикеров!`} />
             }
             {
                 isVisible.error &&
-                <Error title={'Ошибка!'} message={'Превышена максимиальная ширина и высота для стикеров!'} />
+                <Error title={'Ошибка!'} message={'Превышена максимальная ширина и высота для стикеров!'} />
             }
         </div >
     );
