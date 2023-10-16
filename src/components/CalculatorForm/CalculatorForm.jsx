@@ -20,8 +20,6 @@ const CalculatorForm = () => {
 
     const [form] = Form.useForm();
 
-    const [isStickerForm, setIsStickerForm] = useState(false);
-
     const [isVisible, setIsVisible] = useState({
         info: false,
         error: false,
@@ -90,10 +88,6 @@ const CalculatorForm = () => {
         form.resetFields();
     };
 
-    const onAddSize = () => {
-        setIsStickerForm(!isStickerForm);
-    };
-
     const onCanvasPriceChange = (event) => {
         dispatch(changeCanvasPrice(Number(event.target.value)));
     };
@@ -119,21 +113,6 @@ const CalculatorForm = () => {
 
     return (
         <div style={formStyle} >
-
-            {isStickerForm &&
-                <StickerSizeForm stickersState={stickersState} dispatch={dispatch} closeForm={setIsStickerForm} updateInfo={onSubmit} />
-            }
-
-            {
-                !isStickerForm &&
-                <Button style={buttonAddStyle} htmlType="button" type="primary" onClick={onAddSize}>
-                    Добавить размер стикеров
-                </Button>
-            }
-
-            {
-                <Table columns={tableColumnInfo} dataSource={dataTable} pagination={pagination} />
-            }
 
             <Form
                 form={form}
@@ -185,6 +164,13 @@ const CalculatorForm = () => {
                     </Space>
                 </Form.Item>
             </Form>
+
+            <StickerSizeForm stickersState={stickersState} dispatch={dispatch} updateInfo={onSubmit} />
+
+            {
+                <Table columns={tableColumnInfo} dataSource={dataTable} pagination={pagination} />
+            }
+
 
             {
                 isVisible.info && isMaxWidthOrHeight &&

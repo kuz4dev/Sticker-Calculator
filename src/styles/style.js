@@ -1,6 +1,7 @@
 export const formStyle = {
     display: "flex",
     flexDirection: 'column',
+    gap: '5px'
 };
 
 export const titleStyle = {
@@ -14,7 +15,6 @@ export const titleStyle = {
 export const formsStyle = {
     display: 'flex',
     flexDirection: 'column',
-    gap: '5px',
 };
 
 export const sideStyle = {

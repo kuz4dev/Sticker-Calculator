@@ -18,10 +18,6 @@ const StickerSizeForm = ({ closeForm, dispatch, stickersState, updateInfo }) => 
         form.resetFields();
     };
 
-    const onClose = () => {
-        closeForm(false);
-    };
-
     return (
         <div>
             <Form
@@ -83,9 +79,6 @@ const StickerSizeForm = ({ closeForm, dispatch, stickersState, updateInfo }) => 
                         </Button>
                         <Button htmlType="button" onClick={onReset}>
                             Сбросить
-                        </Button>
-                        <Button htmlType="button" onClick={onClose} type='primary'>
-                            Закрыть форму
                         </Button>
                     </Space>
                 </Form.Item>
