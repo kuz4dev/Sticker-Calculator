@@ -3,9 +3,9 @@ import { useEffect, useRef, useState } from "react";
 import StickerSizeForm from "../StickerSizeForm/StickerSizeForm";
 import Error from "../Logs/Error";
 import Info from "../Logs/Info";
-import { buttonAddStyle, formStyle, formsStyle, titleStyle } from "../../styles/style";
+import { buttonAddStyle, buttonInTable, formStyle, formsStyle, titleStyle } from "../../styles/style";
 import { useDispatch, useSelector } from "react-redux";
-import { changeCanvasPrice, changeInkPrice, clearStickerInfo } from "../../store/stickerReducer";
+import { changeCanvasPrice, changeInkPrice, clearStickerInfo, deleteSize } from "../../store/stickerReducer";
 import { inputNumberZeroValidator } from "../../utils/validators/validators";
 import { tableColumnInfo } from "./FormInfo";
 
@@ -64,9 +64,7 @@ const CalculatorForm = () => {
     useEffect(() => {
         if (isMounted.current) {
             onSubmit();
-            console.log(isMounted);
         } else {
-            console.log(isMounted);
             isMounted.current = true;
         }
     }, [lengthToPrint, isMaxWidthOrHeight]);
@@ -96,6 +94,11 @@ const CalculatorForm = () => {
         dispatch(changeInkPrice(Number(event.target.value)));
     };
 
+    const deleteSizeFromTable = (record) => {
+        console.log(record);
+        dispatch(deleteSize(record.key));
+    };
+
     const dataTable = stickers.map((sticker, index) => {
         return ({
             key: sticker.id,
@@ -106,6 +109,40 @@ const CalculatorForm = () => {
             price: Number.isFinite(sticker.oneStickerPrice) ? sticker.oneStickerPrice : '-',
         });
     });
+
+    const tableColumnInfo = [
+        {
+            title: 'Номер размера',
+            dataIndex: 'size',
+            key: 'size',
+        },
+        {
+            title: 'Ширина стикера',
+            dataIndex: 'width',
+            key: 'width',
+        },
+        {
+            title: 'Высота стикера',
+            dataIndex: 'height',
+            key: 'height',
+        },
+        {
+            title: 'Количество',
+            dataIndex: 'count',
+            key: 'count',
+        },
+        {
+            title: 'Цена',
+            dataIndex: 'price',
+            key: 'price',
+        },
+        {
+            title: 'Удалить размер',
+            dataIndex: 'delete',
+            key: 'delete',
+            render: (_, record) => <Button style={buttonInTable} type="primary" onClick={() => deleteSizeFromTable(record)}>Удалить</Button>
+        }
+    ];
 
     const pagination = {
         pageSize: 2,

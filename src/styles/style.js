@@ -53,3 +53,9 @@ export const linkStyle = {
 export const buttonAddStyle = {
     marginBottom: '24px',
 };
+
+export const buttonInTable = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+}
