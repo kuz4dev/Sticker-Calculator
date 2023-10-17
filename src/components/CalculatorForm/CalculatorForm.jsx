@@ -117,12 +117,12 @@ const CalculatorForm = () => {
             key: 'size',
         },
         {
-            title: 'Ширина стикера',
+            title: 'Ширина стикера (см)',
             dataIndex: 'width',
             key: 'width',
         },
         {
-            title: 'Высота стикера',
+            title: 'Высота стикера (см)',
             dataIndex: 'height',
             key: 'height',
         },
@@ -132,7 +132,7 @@ const CalculatorForm = () => {
             key: 'count',
         },
         {
-            title: 'Цена',
+            title: 'Цена (руб)',
             dataIndex: 'price',
             key: 'price',
         },
