@@ -1,7 +1,7 @@
 import { Form, Input, Button, Space, Typography } from "antd";
 import { formsStyle, titleStyle } from "../../styles/style";
 import { inputNumberZeroValidator } from "../../utils/validators/validators";
-import { addStickerSize } from "../../store/stickerReducer";
+import { addStickerSize, updatePlotterPrice } from "../../store/stickerReducer";
 import stickerCalculator from "../../utils/calculator/stickerCalculator";
 
 const StickerSizeForm = ({ dispatch, stickersState, updateInfo }) => {
@@ -9,8 +9,9 @@ const StickerSizeForm = ({ dispatch, stickersState, updateInfo }) => {
     const [form] = Form.useForm();
 
     const onSubmit = ({ width, height, number }) => {
-        const [stickerInRow, finalPrice, metersToPrint, oneStickerPrice, minStickersToPrint] = stickerCalculator(Number(width), Number(height), Number(number), stickersState.canvasPrice, stickersState.inkPrice);
+        const [stickerInRow, finalPrice, metersToPrint, oneStickerPrice, minStickersToPrint, plotterPrice] = stickerCalculator(Number(width), Number(height), Number(number), stickersState.canvasPrice, stickersState.inkPrice);
         dispatch(addStickerSize({ width: Number(width), height: Number(height), number: Number(number), stickerInRow, finalPrice, metersToPrint: Number(metersToPrint), oneStickerPrice, minStickersToPrint }));
+        dispatch(updatePlotterPrice(plotterPrice));
     };
 
     const onReset = () => {

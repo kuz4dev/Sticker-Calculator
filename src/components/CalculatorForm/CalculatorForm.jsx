@@ -3,11 +3,10 @@ import { useEffect, useRef, useState } from "react";
 import StickerSizeForm from "../StickerSizeForm/StickerSizeForm";
 import Error from "../Logs/Error";
 import Info from "../Logs/Info";
-import { buttonAddStyle, buttonInTable, formStyle, formsStyle, titleStyle } from "../../styles/style";
+import { buttonInTable, formStyle, formsStyle, titleStyle } from "../../styles/style";
 import { useDispatch, useSelector } from "react-redux";
 import { changeCanvasPrice, changeInkPrice, clearStickerInfo, deleteSize } from "../../store/stickerReducer";
 import { inputNumberZeroValidator } from "../../utils/validators/validators";
-import { tableColumnInfo } from "./FormInfo";
 
 const MIN_HEIGHT_TO_PRINT = 0.5;
 
@@ -26,8 +25,8 @@ const CalculatorForm = () => {
         minimum: false,
     });
 
-    const lengthToPrint = stickers.map(sticker => sticker.metersToPrint).reduce((accumulator, currentValue) => accumulator + currentValue + 0.002, 0);
-    const finalPrice = stickers.map(sticker => sticker.finalPrice).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+    const lengthToPrint = (stickers.map(sticker => sticker.metersToPrint).reduce((accumulator, currentValue) => accumulator + currentValue + 0.002, 0) + 0.17).toFixed(2);
+    const finalPrice = (stickers.map(sticker => sticker.finalPrice).reduce((accumulator, currentValue) => accumulator + currentValue, 0) + stickersState.plotterPrice).toFixed(2);
     const isMaxWidthOrHeight = stickers.map(sticker => sticker.stickerInRow).every((stickersInRow) => stickersInRow > 0);
 
     const onSubmit = () => {
@@ -95,9 +94,10 @@ const CalculatorForm = () => {
     };
 
     const deleteSizeFromTable = (record) => {
-        console.log(record);
         dispatch(deleteSize(record.key));
     };
+
+    // console.log(stickers[0].oneStickerPrice);
 
     const dataTable = stickers.map((sticker, index) => {
         return ({
@@ -106,7 +106,7 @@ const CalculatorForm = () => {
             width: sticker.width,
             height: sticker.height,
             count: sticker.number,
-            price: Number.isFinite(sticker.oneStickerPrice) ? sticker.oneStickerPrice : '-',
+            price: Number.isFinite(Number(sticker.oneStickerPrice)) ? sticker.oneStickerPrice : '-',
         });
     });
 
