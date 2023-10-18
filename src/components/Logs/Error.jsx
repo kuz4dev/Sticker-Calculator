@@ -1,14 +1,14 @@
 import { Typography } from "antd";
-import { titleStyle } from "../../styles/style";
+import { error } from "./../../styles/style";
 
-const Error = ({ title, message }) => {
+const Error = ({ title }) => {
     return (
         <div>
             <Typography>
-                <Typography.Text style={titleStyle}>
+                <Typography.Text style={error}>
                     {title}
                 </Typography.Text>
-                <pre style={{ margin: '5px' }}>{message}</pre>
+                {/* <pre style={{ margin: '5px' }}>{message}</pre> */}
             </Typography>
         </div>
     );

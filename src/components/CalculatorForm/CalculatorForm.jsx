@@ -98,11 +98,12 @@ const CalculatorForm = () => {
         dispatch(deleteSize(record.key));
     };
 
+
     const onCoefficientChange = (event) => {
-        dispatch(changeCoefficient(Number(event.target.value)));
+        dispatch(changeCoefficient(Number(event.target.value)))
     };
 
-    const dataTable = stickers.map((sticker, index) => {
+    const dataTable = stickers.map((sticker) => {
         return ({
             key: sticker.id,
             size: sticker.id,
@@ -110,22 +111,23 @@ const CalculatorForm = () => {
             height: sticker.height,
             count: sticker.number,
             price: Number.isFinite(Number(sticker.oneStickerPrice)) ? sticker.oneStickerPrice : '-',
+            priceItog: Number.isFinite(Number(sticker.oneStickerPrice)) ? (sticker.oneStickerPrice * coefficient).toFixed(2) : '-',
         });
     });
 
     const tableColumnInfo = [
         {
-            title: 'Номер размера',
+            title: '№ размера',
             dataIndex: 'size',
             key: 'size',
         },
         {
-            title: 'Ширина стикера (см)',
+            title: 'Ширина (см)',
             dataIndex: 'width',
             key: 'width',
         },
         {
-            title: 'Высота стикера (см)',
+            title: 'Высота (см)',
             dataIndex: 'height',
             key: 'height',
         },
@@ -135,9 +137,14 @@ const CalculatorForm = () => {
             key: 'count',
         },
         {
-            title: 'Цена (руб)',
+            title: 'Себестоимость (руб)',
             dataIndex: 'price',
             key: 'price',
+        },
+        {
+            title: 'Итог (руб)',
+            dataIndex: 'priceItog',
+            key: 'priceItog',
         },
         {
             title: 'Удалить размер',
@@ -229,11 +236,11 @@ const CalculatorForm = () => {
 
             {
                 isVisible.minimum && isMounted.current &&
-                <Error title={'Минимальная длина плёнки к печати - 0.5 метра!'} message={`Нужно напечатать больше стикеров!`} />
+                <Error title={'Минимальная длина плёнки к печати - 0.5 метра! Нужно напечатать больше стикеров!'} />
             }
             {
                 isVisible.error &&
-                <Error title={'Ошибка!'} message={'Превышена максимальная ширина и высота для стикеров!'} />
+                <Error title={'Ошибка! Превышена максимальная ширина и высота для стикеров!'} />
             }
         </div >
     );

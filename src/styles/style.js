@@ -59,3 +59,12 @@ export const buttonInTable = {
     alignItems: 'center',
     justifyContent: 'center'
 }
+
+export const error = {
+    fontWeight: 600,
+    fontSize: '16px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: 'red',
+};
