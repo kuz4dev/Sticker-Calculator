@@ -5,7 +5,7 @@ import Error from "../Logs/Error";
 import Info from "../Logs/Info";
 import { buttonInTable, formStyle, formsStyle, titleStyle } from "../../styles/style";
 import { useDispatch, useSelector } from "react-redux";
-import { changeCanvasPrice, changeInkPrice, clearStickerInfo, deleteSize } from "../../store/stickerReducer";
+import { changeCanvasPrice, changeCoefficient, changeInkPrice, clearStickerInfo, deleteSize } from "../../store/stickerReducer";
 import { inputNumberZeroValidator } from "../../utils/validators/validators";
 
 const MIN_HEIGHT_TO_PRINT = 0.5;
@@ -28,6 +28,7 @@ const CalculatorForm = () => {
     const lengthToPrint = (stickers.map(sticker => sticker.metersToPrint).reduce((accumulator, currentValue) => accumulator + currentValue + 0.002, 0) + 0.17).toFixed(2);
     const finalPrice = (stickers.map(sticker => sticker.finalPrice).reduce((accumulator, currentValue) => accumulator + currentValue, 0) + stickersState.plotterPrice).toFixed(2);
     const isMaxWidthOrHeight = stickers.map(sticker => sticker.stickerInRow).every((stickersInRow) => stickersInRow > 0);
+    const coefficient = stickersState.coefficient;
 
     const onSubmit = () => {
         if (!isMaxWidthOrHeight) {
@@ -97,7 +98,9 @@ const CalculatorForm = () => {
         dispatch(deleteSize(record.key));
     };
 
-    // console.log(stickers[0].oneStickerPrice);
+    const onCoefficientChange = (event) => {
+        dispatch(changeCoefficient(Number(event.target.value)));
+    };
 
     const dataTable = stickers.map((sticker, index) => {
         return ({
@@ -160,6 +163,7 @@ const CalculatorForm = () => {
                 initialValues={{
                     priceCanvas: stickersState.canvasPrice,
                     pricePrint: stickersState.inkPrice,
+                    coefficient: stickersState.coefficient,
                 }}
             >
                 <Typography.Text style={titleStyle}>
@@ -190,12 +194,21 @@ const CalculatorForm = () => {
                     <Input onChange={onInkPriceChange} />
                 </Form.Item>
 
+                <Form.Item
+                    name="coefficient"
+                    label="Введите коэффициент для расчёта стоимости"
+                    rules={[
+                        {
+                            validator: inputNumberZeroValidator,
+                        },
+                    ]}
+                >
+                    <Input onChange={onCoefficientChange} />
+                </Form.Item>
+
                 <Form.Item>
                     <Space>
-                        <Button type="primary" htmlType="submit">
-                            Расчитать
-                        </Button>
-                        <Button htmlType="button" onClick={onReset}>
+                        <Button htmlType="button" type='primary' onClick={onReset}>
                             Сбросить
                         </Button>
                     </Space>
@@ -211,7 +224,7 @@ const CalculatorForm = () => {
 
             {
                 isVisible.info && isMaxWidthOrHeight &&
-                <Info stickers={stickers} lengthToPrint={lengthToPrint} finalPrice={finalPrice} />
+                <Info stickers={stickers} lengthToPrint={lengthToPrint} finalPrice={finalPrice} coefficient={coefficient} />
             }
 
             {

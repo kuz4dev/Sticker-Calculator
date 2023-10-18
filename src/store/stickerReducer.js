@@ -4,12 +4,14 @@ const CHANGE_CANVAS_PRICE = 'CHANGE_CANVAS_PRICE';
 const CLEAR_STICKER_SIZES = 'CLEAR_STICKER_SIZES';
 const DELETE_STICKER_SIZE = 'DELETE_STICKER_SIZE';
 const UPDATE_PLOTTER_PRICE = 'UPDATE_PLOTTER_PRICE';
+const COEFFICIENT_CHANGE = 'COEFFICIENT_CHANGE'
 
 const initialState = {
     canvasPrice: 9000,
     inkPrice: 80,
     stickers: [],
-    plotterPrice: null
+    plotterPrice: null,
+    coefficient: 1,
 };
 
 const stickerReducer = (state = initialState, action) => {
@@ -51,6 +53,12 @@ const stickerReducer = (state = initialState, action) => {
                 plotterPrice: action.plotterPrice
             }
         }
+        case COEFFICIENT_CHANGE: {
+            return {
+                ...state,
+                coefficient: action.coefficient
+            }
+        }
         default:
             return state;
     };
@@ -62,5 +70,6 @@ export const changeCanvasPrice = (canvasPrice) => ({ type: CHANGE_CANVAS_PRICE, 
 export const clearStickerInfo = () => ({ type: CLEAR_STICKER_SIZES });
 export const deleteSize = (id) => ({ type: DELETE_STICKER_SIZE, id });
 export const updatePlotterPrice = (plotterPrice) => ({ type: UPDATE_PLOTTER_PRICE, plotterPrice });
+export const changeCoefficient = (coefficient) => ({ type: COEFFICIENT_CHANGE, coefficient })
 
 export default stickerReducer;
