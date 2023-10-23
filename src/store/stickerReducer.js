@@ -4,7 +4,8 @@ const CHANGE_CANVAS_PRICE = 'CHANGE_CANVAS_PRICE';
 const CLEAR_STICKER_SIZES = 'CLEAR_STICKER_SIZES';
 const DELETE_STICKER_SIZE = 'DELETE_STICKER_SIZE';
 const UPDATE_PLOTTER_PRICE = 'UPDATE_PLOTTER_PRICE';
-const COEFFICIENT_CHANGE = 'COEFFICIENT_CHANGE'
+const COEFFICIENT_CHANGE = 'COEFFICIENT_CHANGE';
+const SET_PAGINATION = 'SET_PAGINATION';
 
 const initialState = {
     canvasPrice: 9000,
@@ -12,6 +13,7 @@ const initialState = {
     stickers: [],
     plotterPrice: null,
     coefficient: 1,
+    pagination: 5,
 };
 
 const stickerReducer = (state = initialState, action) => {
@@ -59,6 +61,12 @@ const stickerReducer = (state = initialState, action) => {
                 coefficient: action.coefficient
             }
         }
+        case SET_PAGINATION: {
+            return {
+                ...state,
+                pagination: action.pagination,
+            }
+        }
         default:
             return state;
     };
@@ -70,6 +78,7 @@ export const changeCanvasPrice = (canvasPrice) => ({ type: CHANGE_CANVAS_PRICE, 
 export const clearStickerInfo = () => ({ type: CLEAR_STICKER_SIZES });
 export const deleteSize = (id) => ({ type: DELETE_STICKER_SIZE, id });
 export const updatePlotterPrice = (plotterPrice) => ({ type: UPDATE_PLOTTER_PRICE, plotterPrice });
-export const changeCoefficient = (coefficient) => ({ type: COEFFICIENT_CHANGE, coefficient })
+export const changeCoefficient = (coefficient) => ({ type: COEFFICIENT_CHANGE, coefficient });
+export const setPagination = (pagination) => ({ type: SET_PAGINATION, pagination })
 
 export default stickerReducer;

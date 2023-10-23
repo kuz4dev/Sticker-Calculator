@@ -1,12 +1,13 @@
-import { Form, Typography, Input, Button, Space, Table } from "antd";
+import { Form, Typography, Input, Button, Space, Table, Select } from "antd";
 import { useEffect, useRef, useState } from "react";
 import StickerSizeForm from "../StickerSizeForm/StickerSizeForm";
 import Error from "../Logs/Error";
 import Info from "../Logs/Info";
 import { buttonInTable, formStyle, formsStyle, titleStyle } from "../../styles/style";
 import { useDispatch, useSelector } from "react-redux";
-import { changeCanvasPrice, changeCoefficient, changeInkPrice, clearStickerInfo, deleteSize } from "../../store/stickerReducer";
+import { changeCanvasPrice, changeCoefficient, changeInkPrice, clearStickerInfo, deleteSize, setPagination } from "../../store/stickerReducer";
 import { inputNumberZeroValidator } from "../../utils/validators/validators";
+import './../../App.css';
 
 const MIN_HEIGHT_TO_PRINT = 0.5;
 
@@ -34,29 +35,12 @@ const CalculatorForm = () => {
         if (!isMaxWidthOrHeight) {
             setIsVisible({ error: true, info: false, minimum: false });
         } else {
-            setIsVisible(prevState => {
-                return {
-                    ...prevState,
-                    error: false,
-                }
-            });
+            setIsVisible(prevState => ({ ...prevState, error: false }));
 
             if (lengthToPrint < MIN_HEIGHT_TO_PRINT) {
-                setIsVisible(prevState => {
-                    return {
-                        ...prevState,
-                        info: false,
-                        minimum: true,
-                    }
-                });
+                setIsVisible(prevState => ({ ...prevState, info: false, minimum: true }));
             } else {
-                setIsVisible(prevState => {
-                    return {
-                        ...prevState,
-                        info: true,
-                        minimum: false,
-                    }
-                });
+                setIsVisible(prevState => ({ ...prevState, info: true, minimum: false }))
             }
         }
     };
@@ -70,12 +54,7 @@ const CalculatorForm = () => {
     }, [lengthToPrint, isMaxWidthOrHeight]);
 
     const onFinishFailed = () => {
-        setIsVisible(prevState => {
-            return {
-                ...prevState,
-                info: false,
-            }
-        });
+        setIsVisible(prevState => ({ ...prevState, info: false }));
     };
 
     const onReset = () => {
@@ -98,9 +77,13 @@ const CalculatorForm = () => {
         dispatch(deleteSize(record.key));
     };
 
-
     const onCoefficientChange = (event) => {
         dispatch(changeCoefficient(Number(event.target.value)))
+    };
+
+    const onPaginationSelectChange = (value) => {
+        console.log(value)
+        dispatch(setPagination(value));
     };
 
     const dataTable = stickers.map((sticker) => {
@@ -154,8 +137,27 @@ const CalculatorForm = () => {
         }
     ];
 
+    const selectOptions = [
+        {
+            value: 5,
+            label: 5
+        },
+        {
+            value: 7,
+            label: 7
+        },
+        {
+            value: 10,
+            label: 10
+        },
+        {
+            value: 15,
+            label: 15
+        }
+    ];
+
     const pagination = {
-        pageSize: 2,
+        pageSize: stickersState.pagination,
     };
 
     return (
@@ -225,9 +227,15 @@ const CalculatorForm = () => {
             <StickerSizeForm stickersState={stickersState} dispatch={dispatch} updateInfo={onSubmit} />
 
             {
-                <Table columns={tableColumnInfo} dataSource={dataTable} pagination={pagination} />
+                <Table bordered={true} columns={tableColumnInfo} dataSource={dataTable} pagination={pagination} />
             }
 
+            {stickers.length > 0 && <Select
+                defaultValue={stickersState.pagination}
+                onChange={onPaginationSelectChange}
+                className={'pagination'}
+                options={selectOptions}
+            />}
 
             {
                 isVisible.info && isMaxWidthOrHeight &&

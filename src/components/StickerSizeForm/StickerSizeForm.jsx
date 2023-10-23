@@ -72,7 +72,10 @@ const StickerSizeForm = ({ dispatch, stickersState, updateInfo }) => {
                 </Form.Item>
 
 
-                <Form.Item>
+                <Form.Item style={{
+                    display: 'flex',
+                    alignItems: 'center'
+                }}>
                     <Space>
                         <Button type="primary" htmlType="submit">
                             Добавить размер
